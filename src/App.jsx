@@ -5,32 +5,34 @@ import './App.css'
 
 function App() {
   const[input,setinput] = useState('')
-
   const[data,setdata] = useState([])
 
   function change_input(e) {
     setinput(e.target.value)
-    
   }
 
   function add_btn(e) {
     e.preventDefault()
 
+    if (!input.trim()) return; 
+
     const item = {
       input: input,
       id: Date.now()
     }
+
     let copied = [...data];
-    copied.push(item);
+    copied.push(item)
     setdata(copied);
 
     
-    let storage_copy = []
+    let storage_copy = [];
     if (localStorage.getItem('data')) {
       storage_copy = JSON.parse(localStorage.getItem('data'))
      
     }
-    storage_copy.push(item);
+
+    storage_copy.push(item)
     localStorage.setItem("data",JSON.stringify(storage_copy))
 
     setinput('')
@@ -39,8 +41,8 @@ function App() {
 
  
 
-  useEffect(()=>{
-    let storage_item = []
+  useEffect(()=> {
+    let storage_item = [];
     if (localStorage.getItem('data')) {
       storage_item = JSON.parse(localStorage.getItem('data'))
     }
@@ -49,12 +51,12 @@ function App() {
 
 
   function delet_btn(id) {
-    
+    console.log(id);
     let copy = [...data]
     copy = copy.filter(function (value) {
       return value.id != id
     })
-    localStorage.setItem("data", copy)
+    localStorage.setItem("data", JSON.stringify(copy))
     setdata(copy)
   }
   return(
@@ -65,7 +67,7 @@ function App() {
       </div>
       {
         data.length > 0 && data.map(function (value,index) {
-          return <Card data={value} key={index} delet_btn={delet_btn}/>
+          return <Card title={value} key={index} delet_btn={delet_btn}/>
         })
       }
     </>
